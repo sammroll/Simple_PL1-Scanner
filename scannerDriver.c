@@ -1,4 +1,3 @@
-// starter code for Simple_PL1 scanner
 #include <stdio.h>  //for c I/o
 #include <stdlib.h> // for exit()
 #include <ctype.h>  // for isalpha(), isalnum(), ...
@@ -60,8 +59,7 @@ enum tokenType scan()
                 tempCh = fgetc(src); 
             }
             lexeme[lexLen] = '\0'; // null terminate lexeme so that it knows its the end of the lexeme
-            ungetc(tempCh, src); // put back character that is not a alpha/digit or ‘_’
-            // see if lexeme is a reserved word, if not, return ID.
+            ungetc(tempCh, src); // put back character that is not a alpha/digit or â€˜_â€™
             if (strcmp(lexeme, reserved[0]) == 0)
             {
                 return READ;
@@ -77,8 +75,6 @@ enum tokenType scan()
         }
         else if (isdigit(currentCh))
         {
-            // build lexeme for number
-            // finish fixing lexeme string, ungetc the last character read that is not a digit and then return NUMBER
             lexeme[0] = currentCh;
             lexLen = 1;
             // reads the numbers
@@ -161,7 +157,7 @@ int main(int argc, char* argv[])
     extern FILE* src;
     enum tokenType currentToken;
     if (argc > 1)
-    { // should be better testing for proper number of arguments, but not required for this project
+    {
         if (fopen_s(&src, argv[1], "r"))
         {
             fprintf(stderr, "Error opening source file: %s ", argv[1]);
@@ -170,8 +166,6 @@ int main(int argc, char* argv[])
     }
     while ((currentToken = scan()) != SCAN_EOF)
     {
-        // finish body for displaying the string version of the internal token name and
-        // also print lexeme if the token is a ID or NUMBER. Do not print lexeme for the other tokens.
         if (currentToken == ID)
         {
             printf("%s, %s\n", mnemonic[currentToken], lexeme);
@@ -187,4 +181,5 @@ int main(int argc, char* argv[])
     }
     fclose(src);
     return 0;
+
 } // end driver
